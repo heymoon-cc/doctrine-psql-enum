@@ -1,0 +1,45 @@
+{
+    "name": "heymoon/doctrine-psql-enum",
+    "version": "1.0.0",
+    "description": "Store PHP8.1 native enums as PostgeSQL custom enum types",
+    "type": "symfony-bundle",
+    "license": "MIT",
+    "keywords": ["doctrine-orm", "postgresql", "enum"],
+    "require": {
+        "php": ">=8.1",
+        "doctrine/doctrine-bundle": "2.*",
+        "doctrine/orm": "2.*",
+        "symfony/framework-bundle": "6.*"
+    },
+    "require-dev": {
+        "symfony/yaml": "6.*",
+        "doctrine/doctrine-migrations-bundle": "3.*",
+        "phpunit/phpunit": "^9.5",
+        "symfony/orm-pack": "2.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "HeyMoon\\DoctrinePostgresEnum\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "HeyMoon\\DoctrinePostgresEnum\\Tests\\": "tests/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Egor",
+            "email": "me@heymoon.cc"
+        }
+    ],
+    "scripts": {
+        "test": [
+            "@composer install",
+            "phpunit --log-junit=test-reports/tests.xml"
+        ]
+    },
+    "config": {
+        "secure-http": false
+    }
+}

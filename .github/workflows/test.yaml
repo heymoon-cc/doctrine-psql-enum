@@ -1,0 +1,22 @@
+name: Test
+run-name: ${{ github.actor }} is testing heymoon/doctrine-psql-enum
+on:
+  workflow_dispatch: {}
+  push:
+    paths:
+      - config
+      - src
+      - tests
+      - composer.json
+      - Makefile
+      - phpunit.xml
+jobs:
+  test:
+    runs-on: Linux
+    steps:
+      - uses: actions/checkout@v1
+      - run: make test
+      - name: Upload test results
+        uses: mikepenz/action-junit-report@v3
+        with:
+          report_paths: test-reports/tests.xml
