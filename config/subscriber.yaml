@@ -1,0 +1,11 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+
+  HeyMoon\DoctrinePostgresEnum\Doctrine\Provider\MetaDataProviderInterface:
+    class: HeyMoon\DoctrinePostgresEnum\Doctrine\Provider\MetaDataProvider
+
+  HeyMoon\DoctrinePostgresEnum\Doctrine\Listener\DoctrineEnumColumnListener:
+    tags:
+      name: 'doctrine.event_subscriber'
