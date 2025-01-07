@@ -18,6 +18,7 @@ use Exception;
 use HeyMoon\DoctrinePostgresEnum\Doctrine\Exception\UnsupportedPlatformException;
 use HeyMoon\DoctrinePostgresEnum\Doctrine\Listener\DoctrineEnumColumnListener;
 use HeyMoon\DoctrinePostgresEnum\Tests\BaseTestCase;
+use ReflectionClass;
 
 final class ListenerTest extends BaseTestCase
 {
@@ -42,7 +43,8 @@ final class ListenerTest extends BaseTestCase
      */
     public function testListener(): void
     {
-        $this->assertCount(6, $this->getListener()->getSubscribedEvents());
+        $reflection = new ReflectionClass($this->getListener());
+        $this->assertCount(6, $reflection->getAttributes());
     }
 
     /**

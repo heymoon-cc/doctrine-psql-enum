@@ -3,6 +3,7 @@
 
 namespace HeyMoon\DoctrinePostgresEnum\Doctrine\Listener;
 
+use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
 use Doctrine\DBAL\Event\ConnectionEventArgs;
 use Doctrine\DBAL\Event\SchemaAlterTableAddColumnEventArgs;
 use Doctrine\DBAL\Event\SchemaAlterTableChangeColumnEventArgs;
@@ -14,7 +15,6 @@ use Doctrine\ORM\Mapping\MappingException;
 use HeyMoon\DoctrinePostgresEnum\Doctrine\Exception\UnsupportedPlatformException;
 use HeyMoon\DoctrinePostgresEnum\Doctrine\Provider\MetaDataProviderInterface;
 use HeyMoon\DoctrinePostgresEnum\Doctrine\Type\EnumType;
-use Doctrine\Common\EventSubscriber;
 use Doctrine\DBAL\Event\SchemaAlterTableEventArgs;
 use Doctrine\DBAL\Event\SchemaColumnDefinitionEventArgs;
 use Doctrine\DBAL\Event\SchemaCreateTableEventArgs;
@@ -26,7 +26,13 @@ use ReflectionException;
 use StringBackedEnum;
 use UnitEnum;
 
-final class DoctrineEnumColumnListener implements EventSubscriber
+#[AsDoctrineListener(Events::postConnect)]
+#[AsDoctrineListener(Events::onSchemaCreateTable)]
+#[AsDoctrineListener(Events::onSchemaAlterTable)]
+#[AsDoctrineListener(Events::onSchemaAlterTableAddColumn)]
+#[AsDoctrineListener(Events::onSchemaAlterTableChangeColumn)]
+#[AsDoctrineListener(Events::onSchemaColumnDefinition)]
+final class DoctrineEnumColumnListener
 {
     private bool $nestedCall = false;
     private array $exist = [];
@@ -35,22 +41,10 @@ final class DoctrineEnumColumnListener implements EventSubscriber
 
     public function __construct(private readonly MetaDataProviderInterface $metaDataProvider) {}
 
-    public function getSubscribedEvents(): array
-    {
-        return [
-            Events::postConnect,
-            Events::onSchemaCreateTable,
-            Events::onSchemaAlterTable,
-            Events::onSchemaAlterTableAddColumn,
-            Events::onSchemaAlterTableChangeColumn,
-            Events::onSchemaColumnDefinition
-        ];
-    }
-
     /**
      * @throws UnsupportedPlatformException|Exception
      */
-    public function postConnect(ConnectionEventArgs $event)
+    public function postConnect(ConnectionEventArgs $event): void
     {
         $this->checkPlatform($event->getConnection()->getDatabasePlatform());
     }
@@ -188,7 +182,7 @@ final class DoctrineEnumColumnListener implements EventSubscriber
         $this->nestedCall = false;
     }
 
-    public function onSchemaAlterTableAddColumn(SchemaAlterTableAddColumnEventArgs $event)
+    public function onSchemaAlterTableAddColumn(SchemaAlterTableAddColumnEventArgs $event): void
     {
         if ($this->nestedCall) {
             return;
@@ -199,7 +193,7 @@ final class DoctrineEnumColumnListener implements EventSubscriber
         $event->preventDefault();
     }
 
-    public function onSchemaAlterTableChangeColumn(SchemaAlterTableChangeColumnEventArgs $event)
+    public function onSchemaAlterTableChangeColumn(SchemaAlterTableChangeColumnEventArgs $event): void
     {
         if ($this->nestedCall) {
             $event->preventDefault();
