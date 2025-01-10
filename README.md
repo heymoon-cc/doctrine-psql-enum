@@ -1,4 +1,6 @@
 # Doctrine enums for PostgreSQL
+[![Version](https://poser.pugx.org/heymoon/doctrine-psql-enum/v)](https://packagist.org/packages/heymoon/doctrine-psql-enum)
+[![PHP Version Require](https://poser.pugx.org/heymoon/doctrine-psql-enum/require/php)](https://packagist.org/packages/heymoon/doctrine-psql-enum)
 [![Test](https://github.com/heymoon-cc/doctrine-psql-enum/actions/workflows/test.yaml/badge.svg)](https://github.com/heymoon-cc/doctrine-psql-enum/actions/workflows/test.yaml)
 ## Prerequisites: *Symfony 7 + Doctrine 3*
 

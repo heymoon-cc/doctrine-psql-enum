@@ -22,7 +22,6 @@ use Doctrine\DBAL\Events;
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Schema\ColumnDiff;
-use ReflectionException;
 use StringBackedEnum;
 use UnitEnum;
 
@@ -50,7 +49,7 @@ final class DoctrineEnumColumnListener
     }
 
     /**
-     * @throws Exception|ReflectionException
+     * @throws Exception
      * @noinspection PhpUnused
      */
     public function onSchemaCreateTable(SchemaCreateTableEventArgs $event): void
@@ -137,7 +136,7 @@ final class DoctrineEnumColumnListener
     }
 
     /**
-     * @throws ReflectionException|Exception
+     * @throws Exception
      * @noinspection PhpUnused
      */
     public function onSchemaAlterTable(SchemaAlterTableEventArgs $event): void
@@ -242,7 +241,7 @@ final class DoctrineEnumColumnListener
     }
 
     /**
-     * @throws ReflectionException|Exception
+     * @throws Exception
      */
     protected function processColumn(string $tableName, array $column, AbstractPlatform $platform, bool $alter = false): array
     {

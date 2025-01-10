@@ -5,9 +5,12 @@ namespace HeyMoon\DoctrinePostgresEnum\Doctrine\Type;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
+use ReflectionAttribute;
 use ReflectionEnum;
 use ReflectionException;
+use Doctrine\DBAL\Exception;
 use UnitEnum;
+use HeyMoon\DoctrinePostgresEnum\Attribute\EnumType as EnumTypeAttribute;
 
 class EnumType extends Type
 {
@@ -41,20 +44,26 @@ class EnumType extends Type
         return "($tag:$type)";
     }
 
+    /**
+     * @throws Exception
+     */
     public static function nameFromClass(string $class): string
     {
-        return
+        $attributes = static::getReflection($class)->getAttributes(EnumTypeAttribute::class);
+        /** @var ReflectionAttribute $attribute */
+        $attribute = reset($attributes);
+        return $attributes ? $attribute->getArguments()[0] :
             str_replace('\\', '_', strtolower($class));
     }
 
     /**
-     * @throws ReflectionException
+     * @throws Exception
      */
     public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {
         $class = null;
         if ($column['enumType'] ?? null) {
-            $class = $this->getReflection($column['enumType'])->getName();
+            $class = static::getReflection($column['enumType'])->getName();
         } elseif ($column['comment'] ?? null) {
             $class = static::parseComment($column['comment']);
         }
@@ -91,10 +100,14 @@ class EnumType extends Type
     }
 
     /**
-     * @throws ReflectionException
+     * @throws Exception
      */
-    protected function getReflection(string $enumType): ReflectionEnum
+    protected static function getReflection(string $enumType): ReflectionEnum
     {
-        return new ReflectionEnum($enumType);
+        try {
+            return new ReflectionEnum($enumType);
+        } catch (ReflectionException $e) {
+            throw new Exception($e->getMessage(), $e->getCode(), $e);
+        }
     }
 }

@@ -17,7 +17,7 @@ class DoctrinePostgresEnumExtension extends Extension implements PrependExtensio
     /**
      * @throws Exception
      */
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $configuration = $this->getConfiguration($configs, $container);
         $cfg = $this->processConfiguration($configuration, $configs);
