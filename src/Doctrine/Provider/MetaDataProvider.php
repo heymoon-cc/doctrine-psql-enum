@@ -109,7 +109,7 @@ final class MetaDataProvider implements MetaDataProviderInterface
     {
         $data = $this->getTable($table);
         $reflection = $data->getReflectionProperty($data->getFieldForColumn($field));
-        $class = $reflection->getType()->getName();
+        $class = $reflection->getType()?->getName();
         if (!enum_exists($class)) {
             return null;
         }

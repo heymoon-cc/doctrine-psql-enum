@@ -5,7 +5,6 @@ namespace HeyMoon\DoctrinePostgresEnum\Doctrine\Type;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
-use ReflectionAttribute;
 use ReflectionEnum;
 use ReflectionException;
 use Doctrine\DBAL\Exception;
@@ -50,10 +49,9 @@ class EnumType extends Type
     public static function nameFromClass(string $class): string
     {
         $attributes = static::getReflection($class)->getAttributes(EnumTypeAttribute::class);
-        /** @var ReflectionAttribute $attribute */
-        $attribute = reset($attributes);
-        return $attributes ? $attribute->getArguments()[0] :
-            str_replace('\\', '_', strtolower($class));
+        /** @var EnumTypeAttribute $attribute */
+        $attribute = ($attributes[0] ?? null)?->newInstance();
+        return $attribute?->getName() ?: str_replace('\\', '_', strtolower($class));
     }
 
     /**

@@ -62,6 +62,4 @@ $this->addSql('CREATE TYPE auth_status AS ENUM (\'new\',\'active\',\'inactive\',
 $this->addSql('DROP TYPE IF EXISTS auth_service');
 $this->addSql('CREATE TYPE auth_service AS ENUM (\'google\')');
 $this->addSql('CREATE TABLE auth (id UUID NOT NULL, status auth_status NOT NULL, service auth_service NOT NULL, PRIMARY KEY(id))');
-$this->addSql('COMMENT ON COLUMN auth.status IS \'(DC2Enum:App\\Entity\\Type\\AuthStatus)\'');
-$this->addSql('COMMENT ON COLUMN auth.service IS \'(DC2Enum:App\\Entity\\Type\\Service)\'');
 ```
