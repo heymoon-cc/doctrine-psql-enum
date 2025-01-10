@@ -20,6 +20,9 @@ doctrine_postgres_enum:
 ```
 For defining new enum type, [use native PHP enums](https://www.php.net/manual/language.types.enumerations.php):
 ```php
+use HeyMoon\DoctrinePostgresEnum\Attribute\EnumType;
+
+#[EnumType('auth_status')]
 enum AuthStatus: string
 {
     case New = 'new';
@@ -28,6 +31,7 @@ enum AuthStatus: string
     case Deleted = 'deleted';
 }
 
+#[EnumType('auth_service')]
 enum Service: string
 {
     case Google = 'google';
@@ -53,11 +57,11 @@ class Auth
 ```
 Create migrations via `make:migration`. If enum was created or modified, the `CREATE TYPE`/`ALTER TYPE` calls would be added to migration. Example:
 ```php
-$this->addSql('DROP TYPE IF EXISTS app_entity_type_authstatus');
-$this->addSql('CREATE TYPE app_entity_type_authstatus AS ENUM (\'new\',\'active\',\'inactive\',\'deleted\')');
-$this->addSql('DROP TYPE IF EXISTS app_entity_type_service');
-$this->addSql('CREATE TYPE app_entity_type_service AS ENUM (\'google\')');
-$this->addSql('CREATE TABLE auth (id UUID NOT NULL, status app_entity_type_authstatus NOT NULL, service app_entity_type_service NOT NULL, PRIMARY KEY(id))');
+$this->addSql('DROP TYPE IF EXISTS auth_status');
+$this->addSql('CREATE TYPE auth_status AS ENUM (\'new\',\'active\',\'inactive\',\'deleted\')');
+$this->addSql('DROP TYPE IF EXISTS auth_service');
+$this->addSql('CREATE TYPE auth_service AS ENUM (\'google\')');
+$this->addSql('CREATE TABLE auth (id UUID NOT NULL, status auth_status NOT NULL, service auth_service NOT NULL, PRIMARY KEY(id))');
 $this->addSql('COMMENT ON COLUMN auth.status IS \'(DC2Enum:App\\Entity\\Type\\AuthStatus)\'');
 $this->addSql('COMMENT ON COLUMN auth.service IS \'(DC2Enum:App\\Entity\\Type\\Service)\'');
 ```
