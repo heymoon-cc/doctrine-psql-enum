@@ -7,9 +7,10 @@
     "keywords": ["doctrine-orm", "postgresql", "enum"],
     "require": {
         "php": ">=8.2",
-        "doctrine/doctrine-bundle": "2.*",
-        "doctrine/orm": "3.*",
-        "symfony/framework-bundle": "7.*"
+        "doctrine/doctrine-bundle": "^2.0",
+        "doctrine/orm": "^3.0",
+        "symfony/framework-bundle": "7.*",
+        "doctrine/dbal": "^4"
     },
     "require-dev": {
         "symfony/yaml": "7.*",
