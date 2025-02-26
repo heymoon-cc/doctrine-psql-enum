@@ -7,6 +7,7 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Result;
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use Doctrine\DBAL\Schema\Column;
+use Doctrine\DBAL\Schema\Comparator;
 use Doctrine\DBAL\Schema\ForeignKeyConstraint;
 use Doctrine\DBAL\Schema\PostgreSQLSchemaManager;
 use Doctrine\DBAL\Schema\View;
@@ -113,5 +114,10 @@ final class DoctrineEnumColumnSchemaManager extends PostgreSQLSchemaManager
     protected function _getPortableTableForeignKeyDefinition(array $tableForeignKey): ForeignKeyConstraint
     {
         return $this->schemaManager->_getPortableTableForeignKeyDefinition($tableForeignKey);
+    }
+
+    public function createComparator(): Comparator
+    {
+        return new DoctrineEnumColumnComparator($this->platform, $this->metaDataProvider);
     }
 }

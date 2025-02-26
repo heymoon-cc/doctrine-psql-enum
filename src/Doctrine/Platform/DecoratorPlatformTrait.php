@@ -102,13 +102,4 @@ trait DecoratorPlatformTrait
     {
         return $this->platform->getGuidTypeDeclarationSQL($column);
     }
-
-    public function __call(string $method, array $arguments)
-    {
-        if (method_exists($this->platform, $method)) {
-            return $this->platform->{$method}(...$arguments);
-        }
-
-        throw new \RuntimeException('Not implemented');
-    }
 }
