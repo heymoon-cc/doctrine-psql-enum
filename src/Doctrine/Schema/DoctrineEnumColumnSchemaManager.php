@@ -63,7 +63,7 @@ final class DoctrineEnumColumnSchemaManager extends PostgreSQLSchemaManager
             $column,
             EnumType::getType($metaData->getTypeOfField($field)),
             array_merge($arguments['options'] ?? [], [
-                'notnull' => $arguments['nullable'] ?? true,
+                'notnull' => !($arguments['nullable'] ?? false),
                 'platformOptions' => [
                     'enumType' => $enumType
                 ]
