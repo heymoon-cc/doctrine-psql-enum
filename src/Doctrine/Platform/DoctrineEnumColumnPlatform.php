@@ -4,21 +4,19 @@ namespace HeyMoon\DoctrinePostgresEnum\Doctrine\Platform;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use Doctrine\DBAL\Schema\Column;
+use Doctrine\DBAL\Schema\PostgreSQLSchemaManager;
 use Doctrine\DBAL\Schema\TableDiff;
 use HeyMoon\DoctrinePostgresEnum\Doctrine\Provider\MetaDataProviderInterface;
 use HeyMoon\DoctrinePostgresEnum\Doctrine\Schema\DoctrineEnumColumnSchemaManager;
 use HeyMoon\DoctrinePostgresEnum\Doctrine\Type\EnumType;
 use UnitEnum;
 
-final class DoctrineEnumColumnPlatform extends AbstractPlatform
+final class DoctrineEnumColumnPlatform extends PostgreSQLPlatform
 {
-    use DecoratorPlatformTrait;
-
     private array $exists = [];
-    private array $comments = [];
-    private array $dropComments = [];
 
     public function __construct(private readonly AbstractPlatform $platform, private readonly MetaDataProviderInterface $metaDataProvider)
     {
@@ -52,46 +50,43 @@ final class DoctrineEnumColumnPlatform extends AbstractPlatform
     {
         $sql = [];
         $tableName = $diff->getOldTable()->getName();
-        foreach ([$diff->getAddedColumns(), $diff->getChangedColumns()] as $columns) {
-            foreach ($columns as $column) {
-                if ($column instanceof Column) {
-                    if (!$column->getType() instanceof EnumType) {
-                        continue;
-                    }
-                    // TODO: avoid array_merge in a loop
-                    $sql = array_merge(
-                        $sql,
-                        $this->processColumn(
-                            $tableName,
-                            $column->toArray(),
-                            true
-                        )
-                    );
-                    continue;
-                }
+        foreach ($diff->getAddedColumns() as $column) {
+            if (!$column->getType() instanceof EnumType) {
+                continue;
+            }
 
-                /** @var ColumnDiff $column */
-                $newColumn = $column->getNewColumn();
-                if (!$newColumn->getType() instanceof EnumType) {
-                    continue;
-                }
-                $oldColumn = $column->getOldColumn();
-                if ($oldColumn->getType() instanceof EnumType && !$newColumn->getComment()) {
-                    $comment = $oldColumn->getComment() ?? $this->metaDataProvider->getComment($tableName, $oldColumn->getName());
-                    $newColumn->setComment($comment);
-                }
-                // TODO: avoid array_merge in a loop
-                $sql = array_merge(
-                    $sql,
-                    $this->processColumn($tableName, $newColumn->toArray(), true)
-                );
+            foreach (
+                $this->processColumn(
+                    $tableName,
+                    $column->toArray(),
+                    true
+                ) as $s
+            ) {
+                $sql[] = $s;
+            }
+        }
+
+        foreach ($diff->getChangedColumns() as $column) {
+            $newColumn = $column->getNewColumn();
+            if (!$newColumn->getType() instanceof EnumType) {
+                continue;
+            }
+
+            foreach (
+                $this->processColumn(
+                    $tableName,
+                    $newColumn->toArray(),
+                    true
+                ) as $s
+            ) {
+                $sql[] = $s;
             }
         }
 
         return array_merge($sql, $this->platform->getAlterTableSQL($diff));
     }
 
-    public function createSchemaManager(Connection $connection): AbstractSchemaManager
+    public function createSchemaManager(Connection $connection): PostgreSQLSchemaManager
     {
         return new DoctrineEnumColumnSchemaManager($connection, $this, $this->platform->createSchemaManager($connection), $this->metaDataProvider);
     }
@@ -135,6 +130,7 @@ final class DoctrineEnumColumnPlatform extends AbstractPlatform
             $sql[] = "CREATE TYPE $targetType AS ENUM ($enumSql)";
         }
 
+        $type = $column['type'];
         if ($targetType !== $currentType) {
             if ($alter) {
                 $sql = array_merge($sql, [
