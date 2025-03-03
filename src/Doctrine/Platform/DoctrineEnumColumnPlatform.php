@@ -83,9 +83,6 @@ final class DoctrineEnumColumnPlatform extends PostgreSQLPlatform
             }
         }
 
-        if ('ALTER TABLE beneficiaire ALTER lien_parente DROP NOT NULL' === $this->platform->getAlterTableSQL($diff)[0]) {
-        }
-
         return array_merge($sql, $this->platform->getAlterTableSQL($diff));
     }
 
