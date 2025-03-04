@@ -5,9 +5,9 @@ namespace HeyMoon\DoctrinePostgresEnum\Doctrine\Type;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
+use HeyMoon\DoctrinePostgresEnum\Exception\Exception;
 use ReflectionEnum;
 use ReflectionException;
-use Doctrine\DBAL\Exception;
 use UnitEnum;
 use HeyMoon\DoctrinePostgresEnum\Attribute\EnumType as EnumTypeAttribute;
 

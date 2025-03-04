@@ -3,6 +3,7 @@
 namespace HeyMoon\DoctrinePostgresEnum\Doctrine\Platform;
 
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
@@ -12,6 +13,7 @@ use Doctrine\DBAL\Schema\TableDiff;
 use HeyMoon\DoctrinePostgresEnum\Doctrine\Provider\MetaDataProviderInterface;
 use HeyMoon\DoctrinePostgresEnum\Doctrine\Schema\DoctrineEnumColumnSchemaManager;
 use HeyMoon\DoctrinePostgresEnum\Doctrine\Type\EnumType;
+use StringBackedEnum;
 use UnitEnum;
 
 final class DoctrineEnumColumnPlatform extends PostgreSQLPlatform
@@ -92,6 +94,10 @@ final class DoctrineEnumColumnPlatform extends PostgreSQLPlatform
     }
 
     /**
+     * @param string $tableName
+     * @param array $column
+     * @param bool $alter
+     * @return array
      * @throws Exception
      */
     protected function processColumn(string $tableName, array $column, bool $alter = false): array

@@ -9,7 +9,7 @@ use Doctrine\DBAL\Schema\Table;
 class TestPostgreSQLPlatform extends PostgreSQLPlatform
 {
     /** @noinspection SqlNoDataSourceInspection */
-    public function getCreateTableSQL(Table $table, $createFlags = self::CREATE_INDEXES): array
+    public function getCreateTableSQL(Table $table): array
     {
         $columns = implode(',',
             array_map(fn(Column $c) => "{$c->getName()} {$c->getType()->getSQLDeclaration($c->toArray(), $this)} NOT NULL",
