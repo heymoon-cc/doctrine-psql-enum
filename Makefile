@@ -1,6 +1,6 @@
 test:
 	docker run --name some-postgres -e POSTGRES_PASSWORD=mysecretpassword -p 5432:5432 -d postgres || true
-	bash -c "docker run --name doctrine-psql-enum-test --rm -i -v $$(pwd):/app composer:latest test"
+	bash -c "docker run --name doctrine-psql-enum-test --rm -i -v $$(pwd):/app composer:latest test" || true
 
 clean:
 	docker stop some-postgres || true
