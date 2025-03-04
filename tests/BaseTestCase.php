@@ -9,7 +9,6 @@ use Doctrine\DBAL\Types\Type;
 use HeyMoon\DoctrinePostgresEnum\Doctrine\Type\EnumType;
 use HeyMoon\DoctrinePostgresEnum\Tests\Fixtures\Enum\ExampleEnum;
 use HeyMoon\DoctrinePostgresEnum\Tests\Fixtures\Platform\TestPostgreSQLPlatform;
-use HeyMoon\DoctrinePostgresEnum\Tests\Fixtures\Provider\VoidMetaDataProvider;
 use PHPUnit\Framework\TestCase;
 use UnitEnum;
 
@@ -42,11 +41,5 @@ abstract class BaseTestCase extends TestCase
             ],
             'comment' => EnumType::comment($enum::class)
         ]);
-    }
-
-    public function getListener(): DoctrineEnumColumnListener
-    {
-        return $this->doctrineEnumColumnListener ??
-            ($this->doctrineEnumColumnListener = new DoctrineEnumColumnListener(new VoidMetaDataProvider()));
     }
 }
