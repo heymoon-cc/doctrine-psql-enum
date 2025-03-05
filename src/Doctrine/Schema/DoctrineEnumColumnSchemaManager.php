@@ -40,7 +40,12 @@ final class DoctrineEnumColumnSchemaManager extends PostgreSQLSchemaManager
             return $this->schemaManager->_getPortableTableColumnDefinition($tableColumn);
         }
 
-        $field = $metaData->getFieldForColumn($tableColumn['field']);
+        try {
+            $field = $metaData->getFieldForColumn($tableColumn['field']);
+        } catch (MappingException $e) {
+            // When updating field name there is no field associated with the column but we don't want to throw.
+            return $this->schemaManager->_getPortableTableColumnDefinition($tableColumn);
+        }
 
         $property = $metaData->getReflectionProperty($field);
         $arguments = [];
