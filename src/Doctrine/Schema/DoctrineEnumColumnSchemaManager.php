@@ -14,6 +14,7 @@ use Doctrine\DBAL\Schema\View;
 use HeyMoon\DoctrinePostgresEnum\Doctrine\Provider\MetaDataProviderInterface;
 use HeyMoon\DoctrinePostgresEnum\Doctrine\Type\EnumType;
 use Doctrine\ORM\Mapping\Column as MappingColumn;
+use Doctrine\ORM\Mapping\MappingException;
 use UnitEnum;
 
 /**
