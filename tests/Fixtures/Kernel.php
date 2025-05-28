@@ -36,7 +36,7 @@ class Kernel extends BaseKernel
     {
         $container->extension('doctrine', [
             'dbal' => [
-                'url' => 'postgresql://postgres:mysecretpassword@127.0.0.1:5432/postgres?serverVersion=16&charset=utf8'
+                'url' => 'postgresql://postgres:mysecretpassword@some-postgres:5432/postgres?serverVersion=16&charset=utf8'
             ],
             'orm' => [
                 'auto_mapping' => true,
