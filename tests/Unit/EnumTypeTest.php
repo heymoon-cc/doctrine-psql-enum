@@ -2,9 +2,10 @@
 
 namespace HeyMoon\DoctrinePostgresEnum\Tests\Unit;
 
-use Doctrine\DBAL\Exception;
 use Fixtures\Enum\ExampleInvalidEnum;
+use Doctrine\DBAL\Exception as DBALException;
 use HeyMoon\DoctrinePostgresEnum\Doctrine\Type\EnumType;
+use HeyMoon\DoctrinePostgresEnum\Exception\Exception;
 use HeyMoon\DoctrinePostgresEnum\Tests\BaseTestCase;
 use HeyMoon\DoctrinePostgresEnum\Tests\Fixtures\Enum\ExampleAttributeEnum;
 use HeyMoon\DoctrinePostgresEnum\Tests\Fixtures\Enum\ExampleEnum;
@@ -22,7 +23,7 @@ final class EnumTypeTest extends BaseTestCase
      * @covers EnumType::nameFromClass
      * @covers EnumType::parseComment
      * @covers EnumType::comment
-     * @throws Exception
+     * @throws Exception|DBALException
      */
     public function testEnumType(): void
     {

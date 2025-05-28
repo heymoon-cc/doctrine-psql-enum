@@ -6,7 +6,5 @@ services:
   HeyMoon\DoctrinePostgresEnum\Doctrine\Provider\MetaDataProviderInterface:
     class: HeyMoon\DoctrinePostgresEnum\Doctrine\Provider\MetaDataProvider
 
-  doctrine_enum.column_listener:
-    class: HeyMoon\DoctrinePostgresEnum\Doctrine\Listener\DoctrineEnumColumnListener
-    tags:
-      - { name: doctrine.event_subscriber }
+  HeyMoon\DoctrinePostgresEnum\Doctrine\Middleware\DoctrineEnumColumnMiddleware:
+    class: HeyMoon\DoctrinePostgresEnum\Doctrine\Middleware\DoctrineEnumColumnMiddleware

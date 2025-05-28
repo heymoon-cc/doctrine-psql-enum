@@ -6,17 +6,14 @@ use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Types\Type;
-use HeyMoon\DoctrinePostgresEnum\Doctrine\Listener\DoctrineEnumColumnListener;
 use HeyMoon\DoctrinePostgresEnum\Doctrine\Type\EnumType;
 use HeyMoon\DoctrinePostgresEnum\Tests\Fixtures\Enum\ExampleEnum;
 use HeyMoon\DoctrinePostgresEnum\Tests\Fixtures\Platform\TestPostgreSQLPlatform;
-use HeyMoon\DoctrinePostgresEnum\Tests\Fixtures\Provider\VoidMetaDataProvider;
 use PHPUnit\Framework\TestCase;
 use UnitEnum;
 
 abstract class BaseTestCase extends TestCase
 {
-    private ?DoctrineEnumColumnListener $doctrineEnumColumnListener = null;
     private ?TestPostgreSQLPlatform $platform = null;
 
     /**
@@ -24,9 +21,7 @@ abstract class BaseTestCase extends TestCase
      */
     public function __construct(?string $name = null, array $data = [], $dataName = '')
     {
-        if (!Type::hasType(EnumType::getDefaultName())) {
-            Type::addType(EnumType::getDefaultName(), EnumType::class);
-        }
+        Type::overrideType(EnumType::getDefaultName(), EnumType::class);
         parent::__construct($name, $data, $dataName);
     }
 
@@ -46,11 +41,5 @@ abstract class BaseTestCase extends TestCase
             ],
             'comment' => EnumType::comment($enum::class)
         ]);
-    }
-
-    public function getListener(): DoctrineEnumColumnListener
-    {
-        return $this->doctrineEnumColumnListener ??
-            ($this->doctrineEnumColumnListener = new DoctrineEnumColumnListener(new VoidMetaDataProvider()));
     }
 }

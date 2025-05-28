@@ -16,6 +16,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - run: make test
+      - run: make network.clear
       - name: Upload test results
         uses: mikepenz/action-junit-report@v3
         with:

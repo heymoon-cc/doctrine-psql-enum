@@ -3,3 +3,5 @@
 /vendor
 /test-reports
 /composer.lock
+/var
+/.php-cs-fixer.cache

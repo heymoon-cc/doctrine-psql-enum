@@ -1,4 +1,5 @@
 <?php
+
 /** @noinspection SqlDialectInspection */
 /** @noinspection SqlNoDataSourceInspection */
 
@@ -15,7 +16,9 @@ final class MetaDataProvider implements MetaDataProviderInterface
 {
     private ?array $tables = null;
 
-    public function __construct(private readonly EntityManagerInterface $entityManager) {}
+    public function __construct(private readonly EntityManagerInterface $entityManager)
+    {
+    }
 
     /**
      * @throws Exception
@@ -72,8 +75,8 @@ final class MetaDataProvider implements MetaDataProviderInterface
     {
         $connection = $this->entityManager->getConnection();
         try {
-            $enumRange = $connection->executeQuery("SELECT enum_range(NULL::$type)")
-                ->fetchOne();
+            $enumRange = $connection->executeQuery("SELECT unnest(enum_range(NULL::$type))")
+                ->fetchAllNumeric();
             if (!$enumRange) {
                 return null;
             }
@@ -84,12 +87,11 @@ final class MetaDataProvider implements MetaDataProviderInterface
                 }
                 $platform->registerDoctrineTypeMapping($type, EnumType::getDefaultName());
             }
-        } catch (Exception\DriverException|Exception) {
+        } catch (Exception\DriverException | Exception) {
             return null;
         }
-        return explode(',', substr(
-            $enumRange, 1, -1
-        ));
+
+        return array_map(fn($v) => $v[0], $enumRange);
     }
 
     /**
