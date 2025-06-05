@@ -2,6 +2,8 @@
 [![Version](https://poser.pugx.org/heymoon/doctrine-psql-enum/v)](https://packagist.org/packages/heymoon/doctrine-psql-enum)
 [![PHP Version Require](https://poser.pugx.org/heymoon/doctrine-psql-enum/require/php)](https://packagist.org/packages/heymoon/doctrine-psql-enum)
 [![Test](https://github.com/heymoon-cc/doctrine-psql-enum/actions/workflows/test.yaml/badge.svg)](https://github.com/heymoon-cc/doctrine-psql-enum/actions/workflows/test.yaml)
+[![Maintainability](https://qlty.sh/badges/86677899-9f9f-40c8-95c7-b1200e029944/maintainability.svg)](https://qlty.sh/gh/heymoon-cc/projects/doctrine-psql-enum)
+[![Code Coverage](https://qlty.sh/badges/86677899-9f9f-40c8-95c7-b1200e029944/test_coverage.svg)](https://qlty.sh/gh/heymoon-cc/projects/doctrine-psql-enum)
 ## Prerequisites: *Symfony 7 + Doctrine 3*
 
 ### Installation
