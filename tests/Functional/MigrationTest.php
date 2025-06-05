@@ -25,7 +25,35 @@ class MigrationTest extends TestCase
     }
 
     /**
-     * @covers DoctrineEnumColumnPlatform::processColumn
+     * @covers \HeyMoon\DoctrinePostgresEnum\Doctrine\Platform\DoctrineEnumColumnPlatform::processColumn
+     * @covers \HeyMoon\DoctrinePostgresEnum\Attribute\EnumType::__construct
+     * @covers \HeyMoon\DoctrinePostgresEnum\Attribute\EnumType::getName
+     * @covers \HeyMoon\DoctrinePostgresEnum\Doctrine\Driver\Driver::__construct
+     * @covers \HeyMoon\DoctrinePostgresEnum\Doctrine\Driver\Driver::getDatabasePlatform
+     * @covers \HeyMoon\DoctrinePostgresEnum\Doctrine\Middleware\DoctrineEnumColumnMiddleware::__construct
+     * @covers \HeyMoon\DoctrinePostgresEnum\Doctrine\Middleware\DoctrineEnumColumnMiddleware::wrap
+     * @covers \HeyMoon\DoctrinePostgresEnum\Doctrine\Platform\DoctrineEnumColumnPlatform::__construct
+     * @covers \HeyMoon\DoctrinePostgresEnum\Doctrine\Platform\DoctrineEnumColumnPlatform::_getCreateTableSQL
+     * @covers \HeyMoon\DoctrinePostgresEnum\Doctrine\Platform\DoctrineEnumColumnPlatform::createSchemaManager
+     * @covers \HeyMoon\DoctrinePostgresEnum\Doctrine\Provider\MetaDataProvider::__construct
+     * @covers \HeyMoon\DoctrinePostgresEnum\Doctrine\Provider\MetaDataProvider::getEnumClass
+     * @covers \HeyMoon\DoctrinePostgresEnum\Doctrine\Provider\MetaDataProvider::getRange
+     * @covers \HeyMoon\DoctrinePostgresEnum\Doctrine\Provider\MetaDataProvider::getRawType
+     * @covers \HeyMoon\DoctrinePostgresEnum\Doctrine\Provider\MetaDataProvider::getTable
+     * @covers \HeyMoon\DoctrinePostgresEnum\Doctrine\Provider\MetaDataProvider::getTables
+     * @covers \HeyMoon\DoctrinePostgresEnum\Doctrine\Schema\DoctrineEnumColumnSchemaManager::__construct
+     * @covers \HeyMoon\DoctrinePostgresEnum\Doctrine\Type\EnumType::getDefaultName
+     * @covers \HeyMoon\DoctrinePostgresEnum\Doctrine\Type\EnumType::getReflection
+     * @covers \HeyMoon\DoctrinePostgresEnum\Doctrine\Type\EnumType::getSQLDeclaration
+     * @covers \HeyMoon\DoctrinePostgresEnum\Doctrine\Type\EnumType::nameFromClass
+     * @covers \HeyMoon\DoctrinePostgresEnum\DependencyInjection\Configuration::getConfigTreeBuilder
+     * @covers \HeyMoon\DoctrinePostgresEnum\DependencyInjection\DoctrinePostgresEnumExtension::checkMigrationsAvailability
+     * @covers \HeyMoon\DoctrinePostgresEnum\DependencyInjection\DoctrinePostgresEnumExtension::getConfiguration
+     * @covers \HeyMoon\DoctrinePostgresEnum\DependencyInjection\DoctrinePostgresEnumExtension::load
+     * @covers \HeyMoon\DoctrinePostgresEnum\DependencyInjection\DoctrinePostgresEnumExtension::prepend
+     * @covers \HeyMoon\DoctrinePostgresEnum\DoctrinePostgresEnumBundle::getContainerExtension
+     * @covers \HeyMoon\DoctrinePostgresEnum\Doctrine\Type\EnumType::setCommentTag
+     * @covers \HeyMoon\DoctrinePostgresEnum\Doctrine\Type\EnumType::setDefaultName
      * @return void
      * @throws ExceptionInterface
      */

@@ -12,7 +12,7 @@ on:
       - phpunit.xml
 jobs:
   test:
-    runs-on: Linux
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v1
       - run: make test
@@ -21,3 +21,7 @@ jobs:
         uses: mikepenz/action-junit-report@v3
         with:
           report_paths: test-reports/tests.xml
+      - uses: qltysh/qlty-action/coverage@v1
+        with:
+          token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
+          files: test-reports/clover.xml
