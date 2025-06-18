@@ -5,11 +5,12 @@
 
 namespace HeyMoon\DoctrinePostgresEnum\Doctrine\Provider;
 
-use Doctrine\DBAL\Exception;
+use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\Mapping\ClassMetadata;
 use Doctrine\ORM\Mapping as ORM;
+use HeyMoon\DoctrinePostgresEnum\Doctrine\Exception\MappingException;
 use HeyMoon\DoctrinePostgresEnum\Doctrine\Type\EnumType;
 
 final class MetaDataProvider implements MetaDataProviderInterface
@@ -21,7 +22,7 @@ final class MetaDataProvider implements MetaDataProviderInterface
     }
 
     /**
-     * @throws Exception
+     * @throws DBALException
      */
     public function getComment(string $table, string $column): ?string
     {
@@ -87,7 +88,7 @@ final class MetaDataProvider implements MetaDataProviderInterface
                 }
                 $platform->registerDoctrineTypeMapping($type, EnumType::getDefaultName());
             }
-        } catch (Exception\DriverException | Exception) {
+        } catch (DBALException\DriverException | DBALException) {
             return null;
         }
 
@@ -95,7 +96,7 @@ final class MetaDataProvider implements MetaDataProviderInterface
     }
 
     /**
-     * @throws Exception
+     * @throws DBALException
      */
     public function typeExists($type): bool
     {
@@ -105,7 +106,7 @@ final class MetaDataProvider implements MetaDataProviderInterface
     }
 
     /**
-     * @throws Exception|ORM\MappingException
+     * @throws DBALException|ORM\MappingException
      */
     public function getEnumClass(string $table, string $field): ?string
     {
@@ -127,7 +128,7 @@ final class MetaDataProvider implements MetaDataProviderInterface
         }
         $enumType = $arguments['enumType'] ?? $class;
         if ($class !== $enumType) {
-            throw new Exception("enumType $enumType differs from column class $class");
+            throw new MappingException("enumType $enumType differs from column class $class");
         }
         return $class;
     }
