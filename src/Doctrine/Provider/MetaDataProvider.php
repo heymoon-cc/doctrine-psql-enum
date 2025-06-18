@@ -54,7 +54,7 @@ final class MetaDataProvider implements MetaDataProviderInterface
 
     public function getTable(string $table): ?ClassMetadata
     {
-        return $this->getTables()[$table] ?? null;
+        return $this->getTables()[mb_strtolower($table)] ?? null;
     }
 
     protected function getTables(): array
@@ -66,7 +66,7 @@ final class MetaDataProvider implements MetaDataProviderInterface
         $this->tables = [];
         foreach ($names as $name) {
             $data = $this->entityManager->getClassMetadata($name);
-            $this->tables[$data->getTableName()] = $data;
+            $this->tables[mb_strtolower($data->getTableName())] = $data;
         }
         return $this->tables;
     }

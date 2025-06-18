@@ -3,7 +3,6 @@
 namespace HeyMoon\DoctrinePostgresEnum\Tests\Functional;
 
 use HeyMoon\DoctrinePostgresEnum\Tests\Fixtures\Kernel;
-use HeyMoon\DoctrinePostgresEnum\Doctrine\Platform\DoctrineEnumColumnPlatform;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Exception\ExceptionInterface;
@@ -41,7 +40,10 @@ class MigrationTest extends TestCase
      * @covers \HeyMoon\DoctrinePostgresEnum\Doctrine\Provider\MetaDataProvider::getRawType
      * @covers \HeyMoon\DoctrinePostgresEnum\Doctrine\Provider\MetaDataProvider::getTable
      * @covers \HeyMoon\DoctrinePostgresEnum\Doctrine\Provider\MetaDataProvider::getTables
+     * @covers \HeyMoon\DoctrinePostgresEnum\Doctrine\Platform\DoctrineEnumColumnPlatform::getAlterTableSQL
      * @covers \HeyMoon\DoctrinePostgresEnum\Doctrine\Schema\DoctrineEnumColumnSchemaManager::__construct
+     * @covers \HeyMoon\DoctrinePostgresEnum\Doctrine\Schema\DoctrineEnumColumnSchemaManager::_getPortableTableDefinition
+     * @covers \HeyMoon\DoctrinePostgresEnum\Doctrine\Schema\DoctrineEnumColumnSchemaManager::_getPortableTableColumnDefinition
      * @covers \HeyMoon\DoctrinePostgresEnum\Doctrine\Type\EnumType::getDefaultName
      * @covers \HeyMoon\DoctrinePostgresEnum\Doctrine\Type\EnumType::getReflection
      * @covers \HeyMoon\DoctrinePostgresEnum\Doctrine\Type\EnumType::getSQLDeclaration
@@ -62,10 +64,10 @@ class MigrationTest extends TestCase
         self::$kernel->boot();
         $doctrine = self::$kernel->getContainer()->get('doctrine');
         $connection = $doctrine->getConnection();
-
-        $connection->executeQuery("DROP TYPE IF EXISTS another_example");
+        $connection->executeQuery('DROP TABLE IF EXISTS HasEnumEntity');
+        $connection->executeQuery('DROP TYPE IF EXISTS example CASCADE');
+        $connection->executeQuery('DROP TYPE IF EXISTS another_example CASCADE');
         $connection->executeQuery("CREATE TYPE another_example AS ENUM('foo')");
-
         $application = new Application(self::$kernel);
         $command = $application->get('doctrine:schema:update');
         $output = new BufferedOutput();
@@ -79,7 +81,19 @@ class MigrationTest extends TestCase
 
         $sql = explode(PHP_EOL, $output->fetch());
         array_pop($sql);
-
         $this->assertEquals($expected, $sql);
+        // Testing case insensetivity in table names on update
+        // PostgreSQL supports case-sensitive names with quoutes
+        // Yet, conflicting names in different cases is probably
+        // a poor design choice
+        foreach ($sql as $row) {
+            $connection->executeQuery($row);
+        }
+        $connection->executeQuery('ALTER TABLE HasEnumEntity DROP COLUMN another');
+        $command = $application->get('doctrine:schema:update');
+        $command->run(new ArrayInput(['--dump-sql' => true]), $output);
+        $sql = explode(PHP_EOL, $output->fetch());
+        array_pop($sql);
+        $this->assertEquals('ALTER TABLE hasenumentity ADD another another_example NOT NULL;', array_pop($sql));
     }
 }
