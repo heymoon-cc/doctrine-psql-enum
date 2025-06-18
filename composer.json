@@ -1,6 +1,6 @@
 {
     "name": "heymoon/doctrine-psql-enum",
-    "version": "3.0.0",
+    "version": "3.0.3",
     "description": "Store PHP native enums as PostgeSQL custom enum types",
     "type": "symfony-bundle",
     "license": "MIT",
@@ -37,7 +37,7 @@
     "scripts": {
         "test": [
             "@composer install",
-            "phpunit --log-junit=test-reports/tests.xml"
+            "phpunit --log-junit=test-reports/tests.xml --coverage-clover=test-reports/clover.xml"
         ]
     },
     "config": {

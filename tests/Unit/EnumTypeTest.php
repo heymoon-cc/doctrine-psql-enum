@@ -18,11 +18,16 @@ final class EnumTypeTest extends BaseTestCase
     ];
 
     /**
-     * @covers EnumType::setCommentTag
-     * @covers EnumType::getCommentTag
-     * @covers EnumType::nameFromClass
-     * @covers EnumType::parseComment
-     * @covers EnumType::comment
+     * @covers \HeyMoon\DoctrinePostgresEnum\Doctrine\Type\EnumType::setCommentTag
+     * @covers \HeyMoon\DoctrinePostgresEnum\Doctrine\Type\EnumType::getCommentTag
+     * @covers \HeyMoon\DoctrinePostgresEnum\Doctrine\Type\EnumType::nameFromClass
+     * @covers \HeyMoon\DoctrinePostgresEnum\Doctrine\Type\EnumType::parseComment
+     * @covers \HeyMoon\DoctrinePostgresEnum\Doctrine\Type\EnumType::comment
+     * @covers \HeyMoon\DoctrinePostgresEnum\Attribute\EnumType::__construct
+     * @covers \HeyMoon\DoctrinePostgresEnum\Attribute\EnumType::getName
+     * @covers \HeyMoon\DoctrinePostgresEnum\Doctrine\Type\EnumType::getDefaultName
+     * @covers \HeyMoon\DoctrinePostgresEnum\Doctrine\Type\EnumType::getReflection
+     * @covers \HeyMoon\DoctrinePostgresEnum\Doctrine\Type\EnumType::getSQLDeclaration
      * @throws Exception|DBALException
      */
     public function testEnumType(): void
