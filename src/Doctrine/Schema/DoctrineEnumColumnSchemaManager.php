@@ -28,7 +28,7 @@ final class DoctrineEnumColumnSchemaManager extends PostgreSQLSchemaManager
 
     protected function _getPortableTableColumnDefinition(array $tableColumn): Column
     {
-        $column = $tableColumn['field'];
+        $column = trim($tableColumn['field'], '"');
 
         if (!isset($tableColumn['table_name'])) {
             return $this->schemaManager->_getPortableTableColumnDefinition($tableColumn);
@@ -40,7 +40,7 @@ final class DoctrineEnumColumnSchemaManager extends PostgreSQLSchemaManager
             return $this->schemaManager->_getPortableTableColumnDefinition($tableColumn);
         }
 
-        $field = $metaData->getFieldForColumn($tableColumn['field']);
+        $field = $metaData->getFieldForColumn($column);
 
         $property = $metaData->getReflectionProperty($field);
         $arguments = [];
