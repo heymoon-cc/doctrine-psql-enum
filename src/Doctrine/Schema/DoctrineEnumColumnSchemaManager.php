@@ -4,10 +4,8 @@ namespace HeyMoon\DoctrinePostgresEnum\Doctrine\Schema;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Result;
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use Doctrine\DBAL\Schema\Column;
-use Doctrine\DBAL\Schema\Comparator;
 use Doctrine\DBAL\Schema\ForeignKeyConstraint;
 use Doctrine\DBAL\Schema\PostgreSQLSchemaManager;
 use Doctrine\DBAL\Schema\View;
@@ -28,7 +26,7 @@ final class DoctrineEnumColumnSchemaManager extends PostgreSQLSchemaManager
 
     protected function _getPortableTableColumnDefinition(array $tableColumn): Column
     {
-        $column = trim($tableColumn['field'], '"');
+        $column = $tableColumn['field'];
 
         if (!isset($tableColumn['table_name'])) {
             return $this->schemaManager->_getPortableTableColumnDefinition($tableColumn);
@@ -40,7 +38,11 @@ final class DoctrineEnumColumnSchemaManager extends PostgreSQLSchemaManager
             return $this->schemaManager->_getPortableTableColumnDefinition($tableColumn);
         }
 
-        $field = $metaData->getFieldForColumn($column);
+        try {
+            $field = $metaData->getFieldForColumn($column);
+        } catch (MappingException) {
+            return $this->schemaManager->_getPortableTableColumnDefinition($tableColumn);
+        }
 
         $property = $metaData->getReflectionProperty($field);
         $arguments = [];

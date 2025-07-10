@@ -14,7 +14,7 @@ class HasEnumEntity
     #[ORM\GeneratedValue]
     public int $id;
 
-    #[ORM\Column(type: 'enum', enumType: ExampleAttributeEnum::class)]
+    #[ORM\Column(type: 'enum', enumType: ExampleAttributeEnum::class, name: '"time"')]
     public ExampleAttributeEnum $status;
 
     #[ORM\Column(type: 'enum', enumType: AnotherExampleAttributeEnum::class)]
