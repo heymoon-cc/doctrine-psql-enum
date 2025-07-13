@@ -12,6 +12,7 @@ use Doctrine\DBAL\Schema\View;
 use HeyMoon\DoctrinePostgresEnum\Doctrine\Provider\MetaDataProviderInterface;
 use HeyMoon\DoctrinePostgresEnum\Doctrine\Type\EnumType;
 use Doctrine\ORM\Mapping\Column as MappingColumn;
+use Doctrine\ORM\Mapping\MappingException;
 use UnitEnum;
 
 /**
@@ -41,6 +42,7 @@ final class DoctrineEnumColumnSchemaManager extends PostgreSQLSchemaManager
         try {
             $field = $metaData->getFieldForColumn($column);
         } catch (MappingException) {
+            // When updating field name there is no field associated with the column but we don't want to throw.
             return $this->schemaManager->_getPortableTableColumnDefinition($tableColumn);
         }
 

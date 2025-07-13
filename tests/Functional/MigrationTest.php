@@ -95,5 +95,13 @@ class MigrationTest extends TestCase
         $sql = explode(PHP_EOL, $output->fetch());
         array_pop($sql);
         $this->assertEquals('ALTER TABLE hasenumentity ADD another another_example NOT NULL;', array_pop($sql));
+        $this->markTestIncomplete('Add drop column support');
+        // Test dropping column
+        $connection->executeQuery('ALTER TABLE HasEnumEntity ADD unexisting example');
+        $command = $application->get('doctrine:schema:update');
+        $command->run(new ArrayInput(['--dump-sql' => true]), $output);
+        $sql = explode(PHP_EOL, $output->fetch());
+        array_pop($sql);
+        $this->assertEquals('ALTER TABLE hasenumentity DROP unexisting;', array_pop($sql));
     }
 }
