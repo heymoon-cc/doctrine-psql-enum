@@ -4,10 +4,8 @@ namespace HeyMoon\DoctrinePostgresEnum\Doctrine\Schema;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Result;
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use Doctrine\DBAL\Schema\Column;
-use Doctrine\DBAL\Schema\Comparator;
 use Doctrine\DBAL\Schema\ForeignKeyConstraint;
 use Doctrine\DBAL\Schema\PostgreSQLSchemaManager;
 use Doctrine\DBAL\Schema\View;
@@ -42,8 +40,8 @@ final class DoctrineEnumColumnSchemaManager extends PostgreSQLSchemaManager
         }
 
         try {
-            $field = $metaData->getFieldForColumn($tableColumn['field']);
-        } catch (MappingException $e) {
+            $field = $metaData->getFieldForColumn($column);
+        } catch (MappingException) {
             // When updating field name there is no field associated with the column but we don't want to throw.
             return $this->schemaManager->_getPortableTableColumnDefinition($tableColumn);
         }

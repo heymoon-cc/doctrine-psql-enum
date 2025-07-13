@@ -23,7 +23,8 @@ class DoctrinePostgresEnumExtension extends Extension implements PrependExtensio
         $cfg = $this->processConfiguration($configuration, $configs);
         EnumType::setDefaultName($cfg['type_name'] ?? EnumType::DEFAULT_NAME);
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../../config'));
-        if ($this->isConfigEnabled($container, $cfg['migrations'])) {
+        if (array_key_exists('migrations', $cfg) &&
+            $this->isConfigEnabled($container, $cfg['migrations'])) {
             if ($this->checkMigrationsAvailability()) {
                 EnumType::setCommentTag($cfg['migrations']['comment_tag']);
                 $loader->load('subscriber.yaml');
