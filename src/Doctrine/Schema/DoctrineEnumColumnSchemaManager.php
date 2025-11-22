@@ -3,6 +3,7 @@
 namespace HeyMoon\DoctrinePostgresEnum\Doctrine\Schema;
 
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Types\StringType;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use Doctrine\DBAL\Schema\Column;
@@ -13,6 +14,7 @@ use HeyMoon\DoctrinePostgresEnum\Doctrine\Provider\MetaDataProviderInterface;
 use HeyMoon\DoctrinePostgresEnum\Doctrine\Type\EnumType;
 use Doctrine\ORM\Mapping\Column as MappingColumn;
 use Doctrine\ORM\Mapping\MappingException;
+use InvalidArgumentException;
 use UnitEnum;
 
 /**
@@ -43,7 +45,15 @@ final class DoctrineEnumColumnSchemaManager extends PostgreSQLSchemaManager
             $field = $metaData->getFieldForColumn($column);
         } catch (MappingException) {
             // When updating field name there is no field associated with the column but we don't want to throw.
-            return $this->schemaManager->_getPortableTableColumnDefinition($tableColumn);
+            try {
+                return $this->schemaManager->_getPortableTableColumnDefinition($tableColumn);
+            } catch (InvalidArgumentException $e) {
+                // For dangling enum columns removal migrations
+                return new Column(
+                    $column,
+                    new StringType
+                );
+            }
         }
 
         $property = $metaData->getReflectionProperty($field);
