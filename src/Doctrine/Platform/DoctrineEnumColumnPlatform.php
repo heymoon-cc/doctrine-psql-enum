@@ -22,6 +22,12 @@ final class DoctrineEnumColumnPlatform extends PostgreSQLPlatform
     {
     }
 
+    public function registerDoctrineTypeMapping(string $dbType, string $doctrineType): void
+    {
+        parent::registerDoctrineTypeMapping($dbType, $doctrineType);
+        $this->platform->registerDoctrineTypeMapping($dbType, $doctrineType);
+    }
+
     protected function _getCreateTableSQL(string $name, array $columns, array $options = []): array
     {
         $createTableSQL = $this->platform->_getCreateTableSQL($name, $columns, $options);
