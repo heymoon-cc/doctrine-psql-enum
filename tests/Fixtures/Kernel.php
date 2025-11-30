@@ -40,7 +40,6 @@ class Kernel extends BaseKernel
             ],
             'orm' => [
                 'auto_mapping' => true,
-                'auto_generate_proxy_classes' => true,
                 'default_entity_manager' => 'default',
                 'mappings' => [
                     'DoctrinePostgresEnum' => [
