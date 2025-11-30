@@ -16,7 +16,8 @@
         "symfony/yaml": "7.*",
         "doctrine/doctrine-migrations-bundle": "3.*",
         "phpunit/phpunit": "^9.5",
-        "symfony/orm-pack": "2.*"
+        "symfony/orm-pack": "2.*",
+        "symfony/var-exporter": "^7"
     },
     "autoload": {
         "psr-4": {
