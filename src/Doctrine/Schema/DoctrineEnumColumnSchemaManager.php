@@ -38,7 +38,15 @@ final class DoctrineEnumColumnSchemaManager extends PostgreSQLSchemaManager
         // This can be optimized
         $metaData = $this->metaDataProvider->getTable($tableColumn['table_name']);
         if (!$metaData) {
-            return $this->schemaManager->_getPortableTableColumnDefinition($tableColumn);
+            try {
+                return $this->schemaManager->_getPortableTableColumnDefinition($tableColumn);
+            } catch (InvalidArgumentException $e) {
+                // For dangling tables removal migrations
+                return new Column(
+                    $column,
+                    new StringType
+                );
+            }
         }
 
         try {

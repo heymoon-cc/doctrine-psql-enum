@@ -4,6 +4,7 @@
 [![Test](https://github.com/heymoon-cc/doctrine-psql-enum/actions/workflows/test.yaml/badge.svg)](https://github.com/heymoon-cc/doctrine-psql-enum/actions/workflows/test.yaml)
 [![Maintainability](https://qlty.sh/badges/86677899-9f9f-40c8-95c7-b1200e029944/maintainability.svg)](https://qlty.sh/gh/heymoon-cc/projects/doctrine-psql-enum)
 [![Code Coverage](https://qlty.sh/badges/86677899-9f9f-40c8-95c7-b1200e029944/test_coverage.svg)](https://qlty.sh/gh/heymoon-cc/projects/doctrine-psql-enum)
+[![Matrix](https://img.shields.io/matrix/doctrine-psql-enum%3Aheymoon.cc?fetchMode=guest)](https://matrix.to/#/#doctrine-psql-enum:heymoon.cc)
 ## Prerequisites: *Symfony 7 + Doctrine 3*
 
 ### Installation

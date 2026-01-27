@@ -1,22 +1,23 @@
 {
     "name": "heymoon/doctrine-psql-enum",
-    "version": "3.1.1",
+    "version": "3.2.0",
     "description": "Store PHP native enums as PostgeSQL custom enum types",
     "type": "symfony-bundle",
     "license": "MIT",
     "keywords": ["doctrine-orm", "postgresql", "enum"],
     "require": {
         "php": ">=8.2",
-        "doctrine/doctrine-bundle": "^2.0",
+        "doctrine/doctrine-bundle": "^2.0|^3.0",
         "doctrine/orm": "^3.0",
-        "symfony/framework-bundle": "7.*",
+        "symfony/framework-bundle": "7.*|8.*",
         "doctrine/dbal": "^4"
     },
     "require-dev": {
         "symfony/yaml": "7.*",
         "doctrine/doctrine-migrations-bundle": "3.*",
         "phpunit/phpunit": "^9.5",
-        "symfony/orm-pack": "2.*"
+        "symfony/orm-pack": "2.*",
+        "symfony/var-exporter": "^7"
     },
     "autoload": {
         "psr-4": {
