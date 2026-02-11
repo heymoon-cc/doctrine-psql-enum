@@ -54,7 +54,7 @@ final class MetaDataProvider implements MetaDataProviderInterface
 
     public function getTable(string $table): ?ClassMetadata
     {
-        return $this->getTables()[mb_strtolower($table)] ?? null;
+        return $this->getTables()[$this->trimQuotes($table)] ?? null;
     }
 
     protected function getTables(): array
@@ -66,9 +66,20 @@ final class MetaDataProvider implements MetaDataProviderInterface
         $this->tables = [];
         foreach ($names as $name) {
             $data = $this->entityManager->getClassMetadata($name);
-            $this->tables[mb_strtolower($data->getTableName())] = $data;
+            $this->tables[$this->trimQuotes($data->getTableName())] = $data;
         }
         return $this->tables;
+    }
+
+    /**
+     * Normalize table name by stripping quotes and lowercasing.
+     * Uses same quote-trimming logic as Doctrine\DBAL\Schema\AbstractAsset::trimQuotes
+     Quotes().
+     * PostgreSQL is case-insensitive and lowercases unquoted identifiers.
+     */
+    private function trimQuotes(string $identifier): string
+    {
+        return strtolower(str_replace(['`', '"', '[', ']'], '', $identifier));
     }
 
 
@@ -111,6 +122,11 @@ final class MetaDataProvider implements MetaDataProviderInterface
     public function getEnumClass(string $table, string $field): ?string
     {
         $data = $this->getTable($table);
+
+        if (!$data) {
+            throw new \RuntimeException(sprintf('Table "%s" not found in entity mappings. Does the entity exist?', $table));
+        }
+
         $reflection = $data->getReflectionProperty($data->getFieldForColumn($field));
         $class = $reflection->getType()?->getName();
         if (!enum_exists($class)) {
