@@ -20,6 +20,7 @@ final class DoctrineEnumColumnPlatform extends PostgreSQLPlatform
 
     public function __construct(private readonly AbstractPlatform $platform, private readonly MetaDataProviderInterface $metaDataProvider)
     {
+        parent::__construct();
     }
 
     protected function _getCreateTableSQL(string $name, array $columns, array $options = []): array
