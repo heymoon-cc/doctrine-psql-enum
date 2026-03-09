@@ -66,7 +66,14 @@ final class MetaDataProvider implements MetaDataProviderInterface
         $this->tables = [];
         foreach ($names as $name) {
             $data = $this->entityManager->getClassMetadata($name);
-            $this->tables[$this->trimQuotes($data->getTableName())] = $data;
+            $tableName = $this->trimQuotes($data->getTableName());
+            $schemaName = $data->getSchemaName();
+
+            if ($schemaName) {
+                $tableName = $this->trimQuotes($schemaName) . '.' . $tableName;
+            }
+
+            $this->tables[$tableName] = $data;
         }
         return $this->tables;
     }

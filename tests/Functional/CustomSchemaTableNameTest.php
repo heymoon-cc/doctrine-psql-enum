@@ -1,6 +1,6 @@
 <?php
 
-namespace HeyMoon\DoctrinePostgresEnum\Tests\Functional;
+namespace Functional;
 
 use HeyMoon\DoctrinePostgresEnum\Tests\Fixtures\Kernel;
 use PHPUnit\Framework\TestCase;
@@ -9,7 +9,7 @@ use Symfony\Component\Console\Exception\ExceptionInterface;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 
-class ReservedTableNameTest extends TestCase
+class CustomSchemaTableNameTest extends TestCase
 {
     private static Kernel $kernel;
 
@@ -24,8 +24,8 @@ class ReservedTableNameTest extends TestCase
     }
 
     /**
-     * Test that entities with reserved table names (escaped with backticks) work correctly.
-     * This reproduces the issue where table name lookup fails due to backtick mismatch.
+     * Test that entities with custom schema in table names work correctly.
+     * This reproduces the issue where table name lookup fails due to missing schema prefix as the table keys.
      *
      * @covers \HeyMoon\DoctrinePostgresEnum\Doctrine\Provider\MetaDataProvider::getEnumClass
      * @covers \HeyMoon\DoctrinePostgresEnum\Doctrine\Provider\MetaDataProvider::getTable
@@ -53,7 +53,7 @@ class ReservedTableNameTest extends TestCase
      * @return void
      * @throws ExceptionInterface
      */
-    public function testReservedTableNameWithBackticks()
+    public function testCustomSchemaTableName(): void
     {
         self::$kernel->boot();
         $doctrine = self::$kernel->getContainer()->get('doctrine');
@@ -80,9 +80,8 @@ class ReservedTableNameTest extends TestCase
         $sql = explode(PHP_EOL, $outputText);
         array_pop($sql); // Remove empty line
 
-        // We expect to see CREATE TYPE and CREATE TABLE statements
-        $this->assertContains("CREATE TYPE order_status AS ENUM ('pending','completed','cancelled');", $sql);
-        $this->assertStringContainsString('CREATE TABLE "order"', implode(' ', $sql));
+        // We expect to see CREATE TABLE statements
+        $this->assertStringContainsString('CREATE TABLE custom.custom_schema', implode(' ', $sql));
 
         // Actually execute the schema
         foreach ($sql as $row) {
@@ -93,8 +92,8 @@ class ReservedTableNameTest extends TestCase
 
         // Verify schema was created successfully by checking if the table exists
         $result = $connection->executeQuery(
-            "SELECT EXISTS (SELECT FROM information_schema.tables WHERE table_name = 'order')"
+            "SELECT EXISTS (SELECT FROM information_schema.tables WHERE table_name = 'custom_schema' and table_schema = 'custom')"
         )->fetchOne();
-        $this->assertTrue((bool)$result, 'Table "order" should exist after schema creation');
+        $this->assertTrue((bool)$result, 'Table "custom.custom_schema" should exist after schema creation');
     }
 }
