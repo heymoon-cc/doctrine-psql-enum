@@ -50,6 +50,15 @@ class CustomSchemaTableNameTest extends TestCase
      * @covers \HeyMoon\DoctrinePostgresEnum\Doctrine\Type\EnumType::getReflection
      * @covers \HeyMoon\DoctrinePostgresEnum\Doctrine\Type\EnumType::getSQLDeclaration
      * @covers \HeyMoon\DoctrinePostgresEnum\Doctrine\Type\EnumType::nameFromClass
+     * @covers \HeyMoon\DoctrinePostgresEnum\DependencyInjection\Configuration::getConfigTreeBuilder
+     * @covers \HeyMoon\DoctrinePostgresEnum\DependencyInjection\DoctrinePostgresEnumExtension::checkMigrationsAvailability
+     * @covers \HeyMoon\DoctrinePostgresEnum\DependencyInjection\DoctrinePostgresEnumExtension::getConfiguration
+     * @covers \HeyMoon\DoctrinePostgresEnum\DependencyInjection\DoctrinePostgresEnumExtension::load
+     * @covers \HeyMoon\DoctrinePostgresEnum\DependencyInjection\DoctrinePostgresEnumExtension::prepend
+     * @covers \HeyMoon\DoctrinePostgresEnum\DoctrinePostgresEnumBundle::getContainerExtension
+     * @covers \HeyMoon\DoctrinePostgresEnum\Doctrine\Type\EnumType::getDefaultName
+     * @covers \HeyMoon\DoctrinePostgresEnum\Doctrine\Type\EnumType::setCommentTag
+     * @covers \HeyMoon\DoctrinePostgresEnum\Doctrine\Type\EnumType::setDefaultName
      * @return void
      * @throws ExceptionInterface
      */
