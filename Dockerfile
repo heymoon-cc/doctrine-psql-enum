@@ -1,4 +1,4 @@
-FROM php:8.4-cli-alpine3.21
+FROM php:8.4-cli-alpine3.22
 RUN apk add --no-cache --virtual .build-deps postgresql-dev
 RUN apk add --no-cache postgresql-libs php84-pecl-pcov
 RUN docker-php-ext-install pdo pdo_pgsql && \
