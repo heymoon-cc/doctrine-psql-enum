@@ -57,6 +57,7 @@ class MigrationTest extends TestCase
      * @covers \HeyMoon\DoctrinePostgresEnum\Doctrine\Type\EnumType::setCommentTag
      * @covers \HeyMoon\DoctrinePostgresEnum\Doctrine\Type\EnumType::setDefaultName
      * @covers \HeyMoon\DoctrinePostgresEnum\Doctrine\Provider\MetaDataProvider::trimQuotes
+     * @covers \HeyMoon\DoctrinePostgresEnum\Doctrine\Platform\DoctrineEnumColumnPlatform::registerDoctrineTypeMapping
      * @return void
      * @throws ExceptionInterface
      */
