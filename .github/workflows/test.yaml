@@ -25,3 +25,4 @@ jobs:
         with:
           token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
           files: test-reports/clover.xml
+          strip-prefix: /app/
