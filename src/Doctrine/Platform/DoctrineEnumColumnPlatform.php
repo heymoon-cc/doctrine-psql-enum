@@ -8,6 +8,7 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Schema\PostgreSQLSchemaManager;
 use Doctrine\DBAL\Schema\TableDiff;
+use Doctrine\DBAL\Types\Types;
 use HeyMoon\DoctrinePostgresEnum\Doctrine\Provider\MetaDataProviderInterface;
 use HeyMoon\DoctrinePostgresEnum\Doctrine\Schema\DoctrineEnumColumnSchemaManager;
 use HeyMoon\DoctrinePostgresEnum\Doctrine\Type\EnumType;
@@ -35,15 +36,14 @@ final class DoctrineEnumColumnPlatform extends PostgreSQLPlatform
         $sql = [];
 
         foreach ($columns as $column) {
-            if (!$column['type'] instanceof EnumType) {
+            if ($column['typeName'] !== Types::ENUM) {
                 continue;
             }
 
             foreach (
                 $this->processColumn(
                     $name,
-                    $column,
-                    false
+                    $column
                 ) as $s
             ) {
                 $sql[] = $s;
@@ -141,7 +141,7 @@ final class DoctrineEnumColumnPlatform extends PostgreSQLPlatform
             $sql[] = "CREATE TYPE $targetType AS ENUM ($enumSql)";
         }
 
-        $type = $column['type'];
+        $type = EnumType::getTypeRegistry()->get($column['typeName']);
         if ($targetType !== $currentType) {
             if ($alter) {
                 $sql = array_merge($sql, [

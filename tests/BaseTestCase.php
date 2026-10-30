@@ -35,7 +35,7 @@ abstract class BaseTestCase extends TestCase
      */
     public function getColumn(string $name, UnitEnum $enum = ExampleEnum::Test): Column
     {
-        return new Column($name, EnumType::getType(EnumType::getDefaultName()), [
+        return new Column($name, EnumType::getDefaultName(), [
             'customSchemaOptions' => [
                 'enumType' => $enum::class
             ],

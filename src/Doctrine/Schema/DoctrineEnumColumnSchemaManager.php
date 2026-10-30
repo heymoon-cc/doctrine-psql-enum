@@ -10,6 +10,7 @@ use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\ForeignKeyConstraint;
 use Doctrine\DBAL\Schema\PostgreSQLSchemaManager;
 use Doctrine\DBAL\Schema\View;
+use Doctrine\DBAL\Types\Types;
 use HeyMoon\DoctrinePostgresEnum\Doctrine\Provider\MetaDataProviderInterface;
 use HeyMoon\DoctrinePostgresEnum\Doctrine\Type\EnumType;
 use Doctrine\ORM\Mapping\Column as MappingColumn;
@@ -44,7 +45,7 @@ final class DoctrineEnumColumnSchemaManager extends PostgreSQLSchemaManager
                 // For dangling tables removal migrations
                 return new Column(
                     $column,
-                    new StringType
+                    Types::STRING
                 );
             }
         }
@@ -59,7 +60,7 @@ final class DoctrineEnumColumnSchemaManager extends PostgreSQLSchemaManager
                 // For dangling enum columns removal migrations
                 return new Column(
                     $column,
-                    new StringType
+                    Types::STRING
                 );
             }
         }
